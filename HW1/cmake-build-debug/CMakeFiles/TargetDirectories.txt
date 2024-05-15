@@ -1,0 +1,3 @@
+C:/First Degree/Term_C/Software Project/HW1/cmake-build-debug/CMakeFiles/HW1.dir
+C:/First Degree/Term_C/Software Project/HW1/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/First Degree/Term_C/Software Project/HW1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
