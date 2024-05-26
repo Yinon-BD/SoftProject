@@ -200,9 +200,9 @@ double** fullSymnmf(double **W, int N, int k, double** initMat, int max_iter, do
 
 double** readDataPoints(char *filename, int *numPoints, int *dimension) /* reading the data points from the file */
 {
-    char *line = NULL, *token;
+    char *line = NULL, delim;
     size_t bufferSize = 60000;
-    int i, j, commaCounter = 0, lineCounter = 0, length;
+    int i, j, d = 0, x, number, lineCounter = 0;
     double **points;
     FILE *file;
     file = fopen(filename, "r");
@@ -210,30 +210,34 @@ double** readDataPoints(char *filename, int *numPoints, int *dimension) /* readi
         printf("An Error Has Occurred\n");
         exit(1);
     }
-    line = malloc(bufferSize * sizeof(char));
-    if(line == NULL) {
-        printf("An Error Has Occurred\n");
-        exit(1);
-    }
 
-    if(fgets(line, bufferSize, file) == NULL) {
-        printf("An Error Has Occurred\n");
-        exit(1);
-    }
-    length = strlen(line);
-    for(i = 0; i < length; i++){
-        if(line[i] == ','){
-            commaCounter++;
+    while (1){
+        x = fscanf(file, "%lf%c", &number, &delim);
+        if(x != 2) {
+            fprintf(stderr, "An Error Has Occurred\n");
+            exit(1);
+        }
+        d++;
+        if (delim == "\n"){
+            break;
         }
     }
-    *dimension = commaCounter + 1;
-    lineCounter++;
+    *dimension = d;
+    rewind(file);
 
-    while(fgets(line, bufferSize, file) != NULL){
-        lineCounter++;
+    while (1){
+        x = fscanf(file, "%lf%c", &number, &delim);
+        if(x != 2) {
+            fprintf(stderr, "An Error Has Occurred\n");
+            exit(1);
+        }
+        if (delim == "\n"){
+            lineCounter++;
+        }
     }
     *numPoints = lineCounter;
     rewind(file);
+
     points = calloc(*numPoints, sizeof(double*));
     if(points == NULL) {
         printf("An Error Has Occurred\n");
@@ -247,17 +251,17 @@ double** readDataPoints(char *filename, int *numPoints, int *dimension) /* readi
         }
     }
 
-    i = 0;
-    while(fgets(line, bufferSize, file) != NULL){
-        token = strtok(line, ",");
-        j = 0;
-        while(token != NULL){
-            points[i][j] = atof(token);
-            token = strtok(NULL, ",");
-            j++;
+    for (i=0; i<*numPoints; i++){
+        for (j=0; j<*dimension; j++){
+            x = scanf("%lf%c", &number);
+            if(x != 2) {
+                fprintf(stderr, "An Error Has Occurred\n");
+                exit(1);
+            }
+            points[i][j] = number;
         }
-        i++;
     }
+
     fclose(file);
     free(line);
     return points;
