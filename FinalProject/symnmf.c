@@ -167,7 +167,7 @@ double** fullSymnmf(double **W, int N, int k, double** initMat, int max_iter, do
                 H[i][j] = next_H[i][j];
             }
         }
-        if(frobNorm(diff, N, k) < eps){
+        if(pow(frobNorm(diff, N, k), 2) < eps){
             break;
         }
         /* free auxilary matrices */

@@ -3,7 +3,7 @@
 #include <math.h>
 #include "matrixmath.h"
 
-double **multiplyMatrix(double **matrix1, int row1, int col1, double **matrix2, int row2, int col2) /* multiplying two matrices */
+double **multiplyMatrix(double **matrix1, int row1, int col1, double **matrix2, int row2, int col2)
 {
     double **result;
     int i, j, k;
@@ -34,7 +34,7 @@ double **multiplyMatrix(double **matrix1, int row1, int col1, double **matrix2, 
     return result;
 }
 
-double **transposeMatrix(double **matrix, int row, int col) /* transposing a matrix */
+double **transposeMatrix(double **matrix, int row, int col)
 {
     double **result;
     int i, j;
