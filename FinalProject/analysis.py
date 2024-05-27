@@ -6,7 +6,7 @@ from symnmf import function_hub as sfit
 import sys
 
 def process_nmf_res(H):
-    res = [max(np.argmax(row)) for row in H]
+    res = [np.argmax(row) for row in H]
     return res
         
 
@@ -22,10 +22,10 @@ if __name__ == '__main__':
     d = len(data.columns)
     data = data.values.tolist()
     kmeansSil = metrics.silhouette_score(data, kfit(N, d, k, data, max_iter, epsilon)[1])
-    nmfSil = metrics.silhouette_score(data, sfit(data, N, d, k, "symnmf"))
+    nmfSil = metrics.silhouette_score(data, process_nmf_res(sfit(data, N, d, k, "symnmf")))
     
-    print(f"nmf: {nmfSil}")
-    print(f"kmeans: {kmeansSil}")
+    print(f"nmf: {format(nmfSil, '.4f')}")
+    print(f"kmeans: {format(kmeansSil, '.4f')}")
     
     
     

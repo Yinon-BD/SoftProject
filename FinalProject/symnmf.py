@@ -8,6 +8,7 @@ def read_data_points(file_path):
 
 
 def initialize_matrix(dps, N, d, k):
+    np.random.seed(0)
     W = mysymnmf.norm(dps, N, d)
     m = np.mean(np.array(W))
     H = np.random.uniform(0, 2*np.sqrt(m/k), (N, k))
@@ -37,7 +38,6 @@ def print_result(result): # printing the result elements separated by a comma
         print(",".join([format(result[i][j], ".4f") for j in range(len(result[i]))]))
 
 if __name__ == '__main__':
-    np.random.seed(0)
 
     arguments = sys.argv[1:]
     k = int(arguments[0])
