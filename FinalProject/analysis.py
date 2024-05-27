@@ -5,6 +5,11 @@ from kmeans import fit as kfit
 from symnmf import function_hub as sfit
 import sys
 
+def process_nmf_res(H):
+    res = [max(np.argmax(row)) for row in H]
+    return res
+        
+
 if __name__ == '__main__':
     arguments = sys.argv[1:]
     k = int(arguments[0])
