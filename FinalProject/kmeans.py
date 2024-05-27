@@ -26,7 +26,7 @@ def error_checking(arguments):
 def fit(N, d, k, vectors, max_iter, epsilon):
     centroids = []  # list of centroids' list
     centroids_means = []  # list of centroids' means
-    vectors_location = [-1 for i in range(len(vectors))]
+    vectors_location = [-1 for _ in range(len(vectors))]
     for i in range(k):
         centroids.append([vectors[i]])
         centroids_means.append(vectors[i])
