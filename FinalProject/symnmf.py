@@ -3,12 +3,13 @@ import numpy as np
 import pandas as pd
 import mysymnmf
 
+np.random.seed(0)
+
 def read_data_points(file_path):
     return pd.read_csv(file_path, header=None)
 
 
 def initialize_matrix(dps, N, d, k):
-    np.random.seed(0)
     W = mysymnmf.norm(dps, N, d)
     m = np.mean(np.array(W))
     H = np.random.uniform(0, 2*np.sqrt(m/k), (N, k))
