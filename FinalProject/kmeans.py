@@ -8,7 +8,7 @@ def euclidean_distance(vector1, vector2):
     return distance
 
 
-def calculate_mean(centroid):  # calculate new mean
+def calculate_mean(centroid, dimension):  # calculate new mean
     totals = [0 for _ in range(dimension)]
     for vector in centroid:
         for i in range(dimension):
@@ -23,7 +23,7 @@ def error_checking(arguments):
     assert arguments[2].isdigit() and int(arguments[2]) > 0, "invalid dimension of point!"
 
 
-def fit(N, k, vectors, max_iter, epsilon):
+def fit(N, d, k, vectors, max_iter, epsilon):
     centroids = []  # list of centroids' list
     centroids_means = []  # list of centroids' means
     vectors_location = [-1 for _ in range(N)]
@@ -47,7 +47,7 @@ def fit(N, k, vectors, max_iter, epsilon):
                 centroids[closest].append(vectors[j])
             vectors_location[j] = closest
         for j in range(k):
-            new_mean = calculate_mean(centroids[j])
+            new_mean = calculate_mean(centroids[j], d)
             if euclidean_distance(new_mean, centroids_means[j]) >= epsilon:
                 below_epsilon = False
             centroids_means[j] = new_mean
