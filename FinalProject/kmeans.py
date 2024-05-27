@@ -23,10 +23,10 @@ def error_checking(arguments):
     assert arguments[2].isdigit() and int(arguments[2]) > 0, "invalid dimension of point!"
 
 
-def fit(N, d, k, vectors, max_iter, epsilon):
+def fit(N, k, vectors, max_iter, epsilon):
     centroids = []  # list of centroids' list
     centroids_means = []  # list of centroids' means
-    vectors_location = [-1 for _ in range(len(vectors))]
+    vectors_location = [-1 for _ in range(N)]
     for i in range(k):
         centroids.append([vectors[i]])
         centroids_means.append(vectors[i])
@@ -34,11 +34,11 @@ def fit(N, d, k, vectors, max_iter, epsilon):
 
     for i in range(max_iter):
         below_epsilon = True
-        for j in range(len(vectors)):
+        for j in range(N):
             if i == 0 and (j < k):
                 continue
             distances = []
-            for l in range(len(centroids)):
+            for l in range(k):
                 distances.append(euclidean_distance(vectors[j], centroids_means[l]))
             closest = distances.index(min(distances))
             if vectors_location[j] != closest and vectors_location[j] != -1:
@@ -46,7 +46,7 @@ def fit(N, d, k, vectors, max_iter, epsilon):
             if vectors_location[j] != closest:
                 centroids[closest].append(vectors[j])
             vectors_location[j] = closest
-        for j in range(len(centroids_means)):
+        for j in range(k):
             new_mean = calculate_mean(centroids[j])
             if euclidean_distance(new_mean, centroids_means[j]) >= epsilon:
                 below_epsilon = False

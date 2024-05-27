@@ -16,8 +16,8 @@ if __name__ == '__main__':
     N = len(data)
     d = len(data.columns)
     data = data.values.tolist()
-    kmeansSil = metrics.silhouette_score(data, kfit(N, d, k, data, max_iter, epsilon))
-    symSil = metrics.silhouette_score(data, sfit("symnmf", N, d, k, data))
+    kmeansSil = metrics.silhouette_score(data, kfit(N, k, data, max_iter, epsilon))
+    symSil = metrics.silhouette_score(data, sfit(data, N, d, k, "symnmf"))
     
     print(f"kmeansSil: {kmeansSil}")
     print(f"symSil: {symSil}")
