@@ -154,7 +154,7 @@ double** fullSymnmf(double **W, int N, int k, double** initMat, int max_iter, do
         HHtH = multiplyMatrix(HHt, N, N, H, N, k);
         for(i = 0; i < N; i++){
             for(j = 0; j < k; j++){
-                next_H[i][j] = H[i][j] * (1 - beta + beta * (WH[i][j]/HHtH[i][j]));
+                next_H[i][j] = H[i][j] * (1 - beta + beta * (WH[i][j]/HHtH[i][j]));  /* updating the H matrix */
             }
         }
         for(i = 0; i < N; i++){
@@ -201,9 +201,8 @@ double** fullSymnmf(double **W, int N, int k, double** initMat, int max_iter, do
 double** readDataPoints(char *filename, int *numPoints, int *dimension) /* reading the data points from the file */
 {
     char *line = NULL, delim;
-    size_t bufferSize = 60000;
-    int i, j, d = 0, x, number, lineCounter = 0;
-    double **points;
+    int i, j, d = 0, x, lineCounter = 0;
+    double **points, number;
     FILE *file;
     file = fopen(filename, "r");
     if(file == NULL) {
@@ -211,49 +210,49 @@ double** readDataPoints(char *filename, int *numPoints, int *dimension) /* readi
         exit(1);
     }
 
-    while (1){
+    while (1){  /* reading the first line to get the dimension */
         x = fscanf(file, "%lf%c", &number, &delim);
         if(x != 2) {
             fprintf(stderr, "An Error Has Occurred\n");
             exit(1);
         }
         d++;
-        if (delim == "\n"){
+        if (delim == '\n'){
             break;
         }
     }
     *dimension = d;
-    rewind(file);
+    fclose(file);
+    file = fopen(filename, "r");
 
-    while (1){
+    while (1){  /* counting the number of points */
         x = fscanf(file, "%lf%c", &number, &delim);
-        if(x != 2) {
-            fprintf(stderr, "An Error Has Occurred\n");
-            exit(1);
+        if(x == EOF) {
+            break;
         }
-        if (delim == "\n"){
+        if (delim == '\n'){
             lineCounter++;
         }
     }
     *numPoints = lineCounter;
-    rewind(file);
+    fclose(file);
+    file = fopen(filename, "r");
 
     points = calloc(*numPoints, sizeof(double*));
     if(points == NULL) {
         printf("An Error Has Occurred\n");
         exit(1);
     }
-    for(i = 0; i < *numPoints; i++){
+    for(i = 0; i < *numPoints; i++){  /* allocating memory for the points */
         points[i] = calloc(*dimension, sizeof(double));
         if(points[i] == NULL) {
             printf("An Error Has Occurred\n");
             exit(1);
         }
     }
-
-    for (i=0; i<*numPoints; i++){
+    for (i=0; i<*numPoints; i++){  /* reading the points */
         for (j=0; j<*dimension; j++){
-            x = scanf("%lf%c", &number);
+            x = fscanf(file, "%lf%c", &number, &delim);
             if(x != 2) {
                 fprintf(stderr, "An Error Has Occurred\n");
                 exit(1);
@@ -261,7 +260,6 @@ double** readDataPoints(char *filename, int *numPoints, int *dimension) /* readi
             points[i][j] = number;
         }
     }
-
     fclose(file);
     free(line);
     return points;

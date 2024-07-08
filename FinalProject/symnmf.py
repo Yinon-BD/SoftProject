@@ -39,11 +39,9 @@ def print_result(result): # printing the result elements separated by a comma
         print(",".join([format(result[i][j], ".4f") for j in range(len(result[i]))]))
 
 if __name__ == '__main__':
-
-    arguments = sys.argv[1:]
-    k = int(arguments[0])
-    goal = arguments[1]
-    file_name = arguments[2]
+    k = int(sys.argv[1])
+    goal = sys.argv[2]
+    file_name = sys.argv[3]
     dps_df = read_data_points(file_name)
     N = len(dps_df)
     d = len(dps_df.columns)
